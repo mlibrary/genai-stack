@@ -1,10 +1,51 @@
 services:
 
+  solr:
+    image: solr:9.4
+    ports:
+    - "8983:8983"
+    networks:
+      - net
+    volumes:
+    - ./solr:/var/solr
+
+  rb:
+    build:
+      dockerfile: rb/Dockerfile
+      context: .
+      args:
+      - UID=${UID-1000}
+      - GID=${GID-1000}
+    networks:
+      - net
+    ports:
+      - 3000:3000
+    environment:
+      - UID=${GID-1000}
+      - GID=${GID-1000}
+      - NEO4J_URI=${NEO4J_URI-neo4j://database:7687}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD-password}
+      - NEO4J_USERNAME=${NEO4J_USERNAME-neo4j}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL-http://host.docker.internal:11434}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL-sentence_transformer}
+    volumes:
+      - ./rb:/app
+      - bundle:/bundle
+
+
   llm: &llm
     image: ollama/ollama:latest
     profiles: ["linux"]
     networks:
       - net
+    ports:
+      - 11434:11434
+    volumes:
+    - ./models:/root/.ollama/
+    deploy:
+      resources:
+        limits:
+          cpus: '6.000'
 
   llm-gpu:
     <<: *llm
@@ -27,6 +68,8 @@ services:
       - LLM=${LLM-llama2}
     networks:
       - net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     tty: true
 
   database:
@@ -46,6 +89,8 @@ services:
         interval: 5s
         timeout: 3s
         retries: 5
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - net
 
@@ -71,6 +116,8 @@ services:
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
     networks:
       - net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       database:
         condition: service_healthy
@@ -127,6 +174,8 @@ services:
             - pdf_bot.py
             - api.py
             - front-end/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 8501:8501
 
@@ -165,8 +214,50 @@ services:
             - bot.py
             - api.py
             - front-end/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 8503:8503
+
+  catalog_bot:
+    build:
+      context: .
+      dockerfile: catalog_bot.Dockerfile
+    environment:
+      - NEO4J_URI=${NEO4J_URI-neo4j://database:7687}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD-password}
+      - NEO4J_USERNAME=${NEO4J_USERNAME-neo4j}
+      - OPENAI_API_KEY=${OPENAI_API_KEY-}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL-http://host.docker.internal:11434}
+      - LLM=${LLM-llama2}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL-sentence_transformer}
+      - LANGCHAIN_ENDPOINT=${LANGCHAIN_ENDPOINT-"https://api.smith.langchain.com"}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2-false}
+      - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    networks:
+      - net
+    depends_on:
+      database:
+        condition: service_healthy
+      pull-model:
+        condition: service_completed_successfully
+    x-develop:
+      watch:
+        - action: rebuild
+          path: .
+          ignore:
+            - loader.py
+            - bot.py
+            - api.py
+            - front-end/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 8506:8506
 
   api:
     build:
@@ -205,6 +296,8 @@ services:
             - bot.py
             - pdf_bot.py
             - front-end/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 8504:8504
     healthcheck:
@@ -229,6 +322,8 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - net
     ports:
@@ -236,3 +331,6 @@ services:
 
 networks:
   net:
+
+volumes:
+  bundle:

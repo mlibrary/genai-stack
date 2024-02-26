@@ -1,0 +1,102 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.8.6)
+      public_suffix (>= 2.0.2, < 6.0)
+    baran (0.1.10)
+    builder (3.2.4)
+    byebug (11.1.3)
+    coderay (1.1.3)
+    colorize (0.8.1)
+    domain_name (0.6.20240107)
+    dotenv (3.0.1)
+    eh (1.0.0)
+    faraday (2.9.0)
+      faraday-net_http (>= 2.0, < 3.2)
+    faraday-net_http (3.1.0)
+      net-http
+    faraday-request-timer (0.2.0)
+      faraday (>= 0.9.0)
+    http-accept (1.7.0)
+    http-cookie (1.0.5)
+      domain_name (~> 0.5)
+    json-schema (4.0.0)
+      addressable (>= 2.8)
+    langchainrb (0.9.0)
+      baran (~> 0.1.9)
+      colorize (~> 0.8.1)
+      json-schema (~> 4.0.0)
+      matrix
+      pragmatic_segmenter (~> 0.3.0)
+      tiktoken_ruby (~> 0.0.5)
+      to_bool (~> 2.0.0)
+      zeitwerk (~> 2.5)
+    matrix (0.4.2)
+    method_source (1.0.0)
+    mime-types (3.5.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2023.1205)
+    net-http (0.4.1)
+      uri
+    netrc (0.11.0)
+    ollama-ai (1.0.1)
+      faraday (~> 2.9)
+    persistent-cache (1.0.1)
+      eh
+      persistent-cache-storage-api
+      persistent-cache-storage-directory
+      persistent-cache-storage-ram
+      persistent-cache-storage-sqlite
+    persistent-cache-storage-api (0.1.6)
+    persistent-cache-storage-directory (0.1.2)
+      persistent-cache-storage-api
+    persistent-cache-storage-ram (0.1.3)
+      eh
+      persistent-cache-storage-api
+    persistent-cache-storage-sqlite (0.1.4)
+      eh (~> 1.0.0)
+      persistent-cache-storage-api (~> 0.1)
+      sqlite3 (~> 1.4)
+    pragmatic_segmenter (0.3.23)
+      unicode
+    pry (0.14.2)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    pry-byebug (3.10.1)
+      byebug (~> 11.0)
+      pry (>= 0.13, < 0.15)
+    public_suffix (5.0.4)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    rsolr (2.5.0)
+      builder (>= 2.1.2)
+      faraday (>= 0.9, < 3, != 2.0.0)
+    sqlite3 (1.7.2-x86_64-linux)
+    themoviedb-api (1.4.1)
+      rest-client (~> 2.1)
+    tiktoken_ruby (0.0.6-x86_64-linux)
+    to_bool (2.0.0)
+    unicode (0.4.4.4)
+    uri (0.13.0)
+    zeitwerk (2.6.12)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  dotenv
+  faraday
+  faraday-request-timer
+  langchainrb
+  ollama-ai
+  persistent-cache
+  pry
+  pry-byebug
+  rsolr
+  themoviedb-api
+
+BUNDLED WITH
+   2.3.7

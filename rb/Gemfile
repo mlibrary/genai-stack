@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+gem 'langchainrb'
+gem 'ollama-ai'
+gem 'pry'
+gem 'pry-byebug'
+gem 'themoviedb-api'
+gem 'rsolr'
+gem 'persistent-cache'
+gem 'faraday'
+gem 'faraday-request-timer'
+gem 'dotenv'
