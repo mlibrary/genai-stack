@@ -1,0 +1,12 @@
+name: Build Images
+
+on: push
+
+jobs:
+  build-image:
+    uses: mlibrary/platform-engineering-workflows/.github/workflows/build-unstable.yml@v1
+    with:
+      image_name: pull-model
+      tag: ${{ github.sha }}
+      dockerfile: pull_model.Dockerfile
+    secrets: inherit
