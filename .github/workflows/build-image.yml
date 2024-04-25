@@ -17,3 +17,4 @@ jobs:
       image_name: genai-stack--python
       tag: ${{ github.sha }}
       dockerfile: py/Dockerfile
+    secrets: inherit
