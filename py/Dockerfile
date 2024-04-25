@@ -1,4 +1,4 @@
-FROM python:3.13.0a6
+FROM langchain/langchain
 
 RUN apt-get update && \
   apt-get install -yqq --no-install-recommends \
