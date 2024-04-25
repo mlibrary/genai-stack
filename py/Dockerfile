@@ -3,7 +3,7 @@ FROM python:3.13.0a6
 RUN apt-get update && \
   apt-get install -yqq --no-install-recommends \
     cargo && \
-  pip -U install sentence-transformers \
+  pip install -U sentence-transformers \
   rm -rf \
     /var/lib/apt/lists/* \
     /usr/share/doc \
