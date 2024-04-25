@@ -3,10 +3,17 @@ name: Build Images
 on: push
 
 jobs:
-  build-image:
+  build-image-pull-model:
     uses: mlibrary/platform-engineering-workflows/.github/workflows/build-unstable.yml@v1
     with:
-      image_name: pull-model
+      image_name: genai-stack--pull-model
       tag: ${{ github.sha }}
       dockerfile: pull_model.Dockerfile
     secrets: inherit
+
+  build-image-python:
+    uses: mlibrary/platform-engineering-workflows/.github/workflows/build-unstable.yml@v1
+    with:
+      image_name: genai-stack--python
+      tag: ${{ github.sha }}
+      dockerfile: py/Dockerfile
