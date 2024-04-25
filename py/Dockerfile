@@ -1,4 +1,4 @@
-FROM langchain/langchain
+FROM python:3.12
 
 RUN apt-get update && \
   apt-get install -yqq --no-install-recommends \
