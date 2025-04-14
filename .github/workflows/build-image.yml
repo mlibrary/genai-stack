@@ -18,3 +18,11 @@ jobs:
       tag: ${{ github.sha }}
       dockerfile: py/Dockerfile
     secrets: inherit
+
+  build-image-drupal:
+    uses: mlibrary/platform-engineering-workflows/.github/workflows/build-unstable.yml@v1
+    with:
+      image_name: genai-stack--drupal
+      tag: ${{ github.sha }}
+      dockerfile: drupal/Dockerfile
+    secrets: inherit

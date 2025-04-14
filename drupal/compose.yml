@@ -1,0 +1,45 @@
+---
+services:
+  drupal:
+    build:
+      dockerfile: Dockerfile
+    ports:
+    - 8080:80
+    volumes:
+    - /var/www/html/modules
+    - /var/www/html/profiles
+    - /var/www/html/themes
+    - /var/www/html/sites
+#    depends_on:
+#    - db
+#    - llm
+
+  db:
+    image: "mariadb:11.8.1-rc"
+    volumes:
+    - /var/lib/mysql
+    ports:
+    - 3306:3306
+    env_file:
+    - .env
+
+  llm:
+    image: ollama/ollama:0.6.5
+    profiles: ["linux"]
+    ports:
+      - 11434:11434
+    volumes:
+    - ./models:/root/.ollama/
+    deploy:
+      resources:
+        limits:
+          cpus: '6.000'
+
+  pull-model:
+    image: genai-stack/pull-model:latest
+    environment:
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL-http://llm:11434}
+      - LLM=${LLM-llama2}
+    tty: true
+    profiles: ["puller"]
+
