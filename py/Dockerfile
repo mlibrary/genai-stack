@@ -14,8 +14,8 @@ RUN mkdir -p /app
 WORKDIR /app
 
 ARG UNAME=app
-ARG UID
-ARG GID
+ARG UID=1000
+ARG GID=1000
 ENV APP_HOME /app
 
 #Create the group for the user
@@ -30,6 +30,6 @@ RUN if [ x"${UID}" != x"" ] ; \
     else useradd -m -d ${APP_HOME} -g ${UNAME} -s /bin/bash ${UNAME} ; \
     fi
 
-COPY requirements.txt .
+COPY requirements.txt sentence_embveddings.py setup.py startup.sh setup.sh /app/
 
-CMD tail -f /dev/null
+CMD /app/startup.sh
