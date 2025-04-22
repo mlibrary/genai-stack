@@ -30,6 +30,6 @@ RUN if [ x"${UID}" != x"" ] ; \
     else useradd -m -d ${APP_HOME} -g ${UNAME} -s /bin/bash ${UNAME} ; \
     fi
 
-COPY py/requirements.txt py/sentence_embveddings.py py/setup.py py/startup.sh py/setup.sh /app/
+COPY py/requirements.txt py/sentence_embeddings.py py/setup.sh py/setup.py py/startup.sh /app
 
 CMD /app/startup.sh
