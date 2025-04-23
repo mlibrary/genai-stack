@@ -5,5 +5,7 @@ if [ ! -e /app/venv/bin/activate ] ; then
   python -m venv /app/venv
   source /app/venv/bin/activate
   pip install -r requirements.txt
-  python setup.py
+  python setup1.py
+  python setup2.py
+  python setup3.py
 fi
